@@ -27,5 +27,22 @@ namespace MyToolSet
         {
             return str.ToPinYinAbbr();
         }
+
+        /// <summary>
+        /// 首字母小写
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        public static string StrFirstCharToLower(this string str)
+        {
+            if (str == null)
+                return "";
+            int iLen = str.Length;
+            if (iLen == 0)
+                return "";
+            if (iLen == 1)
+                return str.ToLower();
+            return str[0].ToString().ToLower() + str.Substring(1);
+        }
     }
 }
