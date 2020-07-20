@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="Class1.cs" />
     <Compile Include="DataGroupHelper.cs" />
+    <Compile Include="DirectoryHelper.cs" />
     <Compile Include="EnumExtension.cs" />
     <Compile Include="ExcelModelConverter.cs" />
     <Compile Include="FileHelperExtension.cs" />

@@ -8,10 +8,11 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>CodeGenerator</RootNamespace>
     <AssemblyName>CodeGenerator</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -43,11 +44,33 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Business\Core\BusinessBuilderCore.cs" />
+    <Compile Include="Business\BusinessBuilderClient.cs" />
+    <Compile Include="Business\BusinessFactory.cs" />
+    <Compile Include="Business\Core\ControllerBuilder.cs" />
+    <Compile Include="Business\Core\RepImplementBuilder.cs" />
+    <Compile Include="Business\Core\RepInterfaceBuilder.cs" />
+    <Compile Include="Business\Core\ServiceImplementBuilder.cs" />
+    <Compile Include="Business\Core\ServiceInterfaceBuilder.cs" />
+    <Compile Include="Model\ModelBuilderClient.cs" />
+    <Compile Include="Model\ConstInfo.cs" />
+    <Compile Include="Model\DescriptionModel.cs" />
+    <Compile Include="Model\FieldProperty.cs" />
+    <Compile Include="Model\FileType.cs" />
+    <Compile Include="Model\ModelBuilderCore.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Model\SqlDataReaderExtension.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MyToolSet\MyToolSet.csproj">
+      <Project>{2bde15ee-200c-41f9-a518-33fecd4502ad}</Project>
+      <Name>MyToolSet</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
