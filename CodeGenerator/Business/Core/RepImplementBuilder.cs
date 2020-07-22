@@ -32,20 +32,27 @@ namespace CodeGenerator
             templateBuilder.AppendLine("        }");
 
 
+            templateBuilder.AppendLine("");
+            templateBuilder.AppendLine("");
+
+
             templateBuilder.AppendLine("        /// <summary>");
-            templateBuilder.AppendLine("        /// ");
+            templateBuilder.AppendLine("        /// 添加实体");
             templateBuilder.AppendLine("        /// </summary>");
             templateBuilder.AppendLine("        /// <param name=\"model\"></param>");
             templateBuilder.AppendLine("        /// <returns></returns>");
-            templateBuilder.AppendLine("        public async Task<$$TABLENAME$$Entity> InfoAsync($$TABLENAME$$ConditionModel model)");
+            templateBuilder.AppendLine("        public async Task<$$TABLENAME$$Entity> AddAsync($$TABLENAME$$AddModel model)");
             templateBuilder.AppendLine("        {");
-            templateBuilder.AppendLine("            var items = await GetListAsync(\"\");");
-            templateBuilder.AppendLine("            return items.FirstOrDefault();");
+            templateBuilder.AppendLine("            var addItem = _mapper.Map<$$TABLENAME$$Entity>(model); ");
+            templateBuilder.AppendLine("            await InsertAsync(addItem);");
+            templateBuilder.AppendLine("            return addItem;");
             templateBuilder.AppendLine("        }");
 
+            templateBuilder.AppendLine("");
+            templateBuilder.AppendLine("");
 
             templateBuilder.AppendLine("        /// <summary>");
-            templateBuilder.AppendLine("        /// ");
+            templateBuilder.AppendLine("        /// 修改实体");
             templateBuilder.AppendLine("        /// </summary>");
             templateBuilder.AppendLine("        /// <param name=\"model\"></param>");
             templateBuilder.AppendLine("        /// <returns></returns>");
@@ -56,9 +63,25 @@ namespace CodeGenerator
             templateBuilder.AppendLine("            return dbItem;");
             templateBuilder.AppendLine("        }");
 
+            templateBuilder.AppendLine("");
+            templateBuilder.AppendLine("");
 
             templateBuilder.AppendLine("        /// <summary>");
-            templateBuilder.AppendLine("        /// ");
+            templateBuilder.AppendLine("        /// 获取单个对象");
+            templateBuilder.AppendLine("        /// </summary>");
+            templateBuilder.AppendLine("        /// <param name=\"model\"></param>");
+            templateBuilder.AppendLine("        /// <returns></returns>");
+            templateBuilder.AppendLine("        public async Task<$$TABLENAME$$Entity> InfoAsync($$TABLENAME$$ConditionModel model)");
+            templateBuilder.AppendLine("        {");
+            templateBuilder.AppendLine("            var items = await GetListAsync(\"\");");
+            templateBuilder.AppendLine("            return items.FirstOrDefault();");
+            templateBuilder.AppendLine("        }");
+
+            templateBuilder.AppendLine("");
+            templateBuilder.AppendLine("");
+
+            templateBuilder.AppendLine("        /// <summary>");
+            templateBuilder.AppendLine("        /// 获取对象列表");
             templateBuilder.AppendLine("        /// </summary>");
             templateBuilder.AppendLine("        /// <param name=\"model\"></param>");
             templateBuilder.AppendLine("        /// <returns></returns>");
@@ -69,17 +92,7 @@ namespace CodeGenerator
             templateBuilder.AppendLine("        }");
 
 
-            templateBuilder.AppendLine("        /// <summary>");
-            templateBuilder.AppendLine("        /// ");
-            templateBuilder.AppendLine("        /// </summary>");
-            templateBuilder.AppendLine("        /// <param name=\"model\"></param>");
-            templateBuilder.AppendLine("        /// <returns></returns>");
-            templateBuilder.AppendLine("        public async Task<$$TABLENAME$$Entity> AddAsync($$TABLENAME$$Model model)");
-            templateBuilder.AppendLine("        {");
-            templateBuilder.AppendLine("            var addItem = _mapper.Map<$$TABLENAME$$Entity>(model); ");
-            templateBuilder.AppendLine("            await InsertAsync(addItem);");
-            templateBuilder.AppendLine("            return addItem;");
-            templateBuilder.AppendLine("        }");
+
             templateBuilder.AppendLine("    }");
             templateBuilder.AppendLine("  }");
             return BusinessBuilderCore.BuildAll(templateBuilder.ToString(), name);

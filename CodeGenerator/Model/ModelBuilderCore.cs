@@ -19,14 +19,13 @@ namespace CodeGenerator
             {
                 FileType.Entity,
                 FileType.Model,
-                FileType.ConditionModel
+                FileType.ConditionModel,
+                FileType.RequestModel,
+                FileType.ResponseModel,
             };
 
-            BuildClient(FileType.Entity, tableName, tableModels, descriptionModels, GenerateTableEntityString);
+            BuildClient(fileTypes, tableName, tableModels, descriptionModels, GenerateModelStringByFileType);
 
-            BuildClient(FileType.Model, tableName, tableModels, descriptionModels, GenerateTableModelString);
-
-            BuildClient(FileType.ConditionModel, tableName, tableModels, descriptionModels, GenerateTableConditionModelString);
         }
 
         public static List<DescriptionModel> CreateDescriptionModel(string tableName)
@@ -55,11 +54,17 @@ namespace CodeGenerator
             }
         }
 
-        private static void BuildClient(FileType fileType, string tableName, List<FieldProperty> fieldPropertys, List<DescriptionModel> descriptionModels, Func<string, List<FieldProperty>, List<DescriptionModel>, string> func)
+        private static void BuildClient(List<FileType> fileTypes, string tableName,
+            List<FieldProperty> fieldPropertys,
+            List<DescriptionModel> descriptionModels,
+            Func<FileType, string, List<FieldProperty>, List<DescriptionModel>, string> func)
         {
-            string stringBuilder = func(tableName, fieldPropertys, descriptionModels);
+            foreach (var fileType in fileTypes)
+            {
+                string stringBuilder = func(fileType,tableName, fieldPropertys, descriptionModels);
 
-            FlushModelToDisk(fileType, $"{tableName}{fileType.ToString()}", stringBuilder);
+                FlushModelToDisk(fileType, $"{tableName}{fileType.ToString()}", stringBuilder);
+            }
         }
 
         private static void FlushModelToDisk(FileType fileType, string tableName, string stringBuilder)
@@ -95,46 +100,14 @@ namespace CodeGenerator
             sr.Close();
         }
 
-        public static string GenerateTableEntityString(string tableName, List<FieldProperty> fieldPropertys, List<DescriptionModel> descriptionModels)
-        {
-            StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.Append($"using System;\r\n");
-            stringBuilder.Append($"using JZFZ.Infrastructure.Data.Att;\r\n");
-
-            stringBuilder.Append($"{ConstInfo.EntityNamespace}  \r\n{{\r\n");
-
-            stringBuilder.Append($"[Table(\"{tableName}\")]\r\n");
-            stringBuilder.Append($"public class {tableName}Entity \r\n{{\r\n");
-
-            foreach (var item in fieldPropertys)
-            {
-                stringBuilder.Append($"/// <summary>\r\n");
-                stringBuilder.Append($"/// {GetDescription(item, descriptionModels)}\r\n");
-                stringBuilder.Append($"/// </summary>\r\n");
-
-                if (item.ColumnName.Equals("pkid", StringComparison.InvariantCultureIgnoreCase) || item.ColumnName.Equals("id", StringComparison.InvariantCultureIgnoreCase))
-                {
-                    stringBuilder.Append($"[Key]\r\n");
-                }
-
-                stringBuilder.Append($"  public {GetTypeOfColumn(item.TypeName, item.IsnullAble)} {item.ColumnName} {{get;set;}}\r\n \r\n");
-            }
-
-            stringBuilder.Append("} \r\n");
-
-
-            stringBuilder.Append("} \r\n");
-            return stringBuilder.ToString();
-        }
-
-        public static string GenerateTableModelString(string tableName, List<FieldProperty> fieldPropertys, List<DescriptionModel> descriptionModels)
+        public static string GenerateModelStringByFileType(FileType fileType, string tableName, List<FieldProperty> fieldPropertys, List<DescriptionModel> descriptionModels)
         {
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.Append($"using System;\r\n");
             stringBuilder.Append($"using JZFZ.Infrastructure.Data.Att;\r\n");
             stringBuilder.Append($"{ConstInfo.ModelNamespace}  \r\n{{\r\n");
 
-            stringBuilder.Append($"public class {tableName}Model \r\n{{\r\n");
+            stringBuilder.Append($"public class {tableName}{fileType.ToString()} \r\n{{\r\n");
 
             foreach (var item in fieldPropertys)
             {
@@ -151,29 +124,8 @@ namespace CodeGenerator
             return stringBuilder.ToString();
         }
 
-        public static string GenerateTableConditionModelString(string tableName, List<FieldProperty> fieldPropertys, List<DescriptionModel> descriptionModels)
-        {
-            StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.Append($"using System;\r\n");
-            stringBuilder.Append($"using JZFZ.Infrastructure.Data.Att;\r\n");
-            stringBuilder.Append($"{ConstInfo.ModelNamespace}  \r\n{{\r\n");
-
-            stringBuilder.Append($"public class {tableName}ConditionModel \r\n{{\r\n");
-
-            foreach (var item in fieldPropertys)
-            {
-                stringBuilder.Append($"/// <summary>\r\n");
-                stringBuilder.Append($"/// {GetDescription(item, descriptionModels)}\r\n");
-                stringBuilder.Append($"/// </summary>\r\n");
-                stringBuilder.Append($"  public {GetTypeOfColumn(item.TypeName, item.IsnullAble)} {item.ColumnName} {{get;set;}}\r\n  \r\n");
-            }
-
-            stringBuilder.Append("} \r\n");
 
 
-            stringBuilder.Append("} \r\n");
-            return stringBuilder.ToString();
-        }
 
         private static string GetDescription(FieldProperty item, List<DescriptionModel> descriptionModels)
         {

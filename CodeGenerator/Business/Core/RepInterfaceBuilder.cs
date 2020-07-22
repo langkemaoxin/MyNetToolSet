@@ -24,31 +24,37 @@ namespace CodeGenerator
             templateBuilder.AppendLine("    {");
 
             templateBuilder.AppendLine("        /// <summary>");
-            templateBuilder.AppendLine("        /// ");
+            templateBuilder.AppendLine("        /// 添加单个对象");
             templateBuilder.AppendLine("        /// </summary>");
             templateBuilder.AppendLine("        /// <param name=\"model\"></param>");
             templateBuilder.AppendLine("        /// <returns></returns>");
-            templateBuilder.AppendLine("        Task<$$TABLENAME$$Entity> AddAsync($$TABLENAME$$Model model);");
+            templateBuilder.AppendLine("        Task<$$TABLENAME$$Entity> AddAsync($$TABLENAME$$AddModel model);");
 
-
-            templateBuilder.AppendLine("        /// <summary>");
-            templateBuilder.AppendLine("        /// ");
-            templateBuilder.AppendLine("        /// </summary>");
-            templateBuilder.AppendLine("        /// <param name=\"model\"></param>");
-            templateBuilder.AppendLine("        /// <returns></returns>");
-            templateBuilder.AppendLine("        Task<$$TABLENAME$$Entity> InfoAsync($$TABLENAME$$ConditionModel model);");
-
+            templateBuilder.AppendLine("");
+            templateBuilder.AppendLine("");
 
             templateBuilder.AppendLine("        /// <summary>");
-            templateBuilder.AppendLine("        /// ");
+            templateBuilder.AppendLine("        /// 修改单个对象");
             templateBuilder.AppendLine("        /// </summary>");
             templateBuilder.AppendLine("        /// <param name=\"model\"></param>");
             templateBuilder.AppendLine("        /// <returns></returns>");
             templateBuilder.AppendLine("        Task<$$TABLENAME$$Entity> ModifyAsync($$TABLENAME$$Model model);");
 
+            templateBuilder.AppendLine("");
+            templateBuilder.AppendLine("");
 
             templateBuilder.AppendLine("        /// <summary>");
-            templateBuilder.AppendLine("        /// ");
+            templateBuilder.AppendLine("        /// 获取单个对象");
+            templateBuilder.AppendLine("        /// </summary>");
+            templateBuilder.AppendLine("        /// <param name=\"model\"></param>");
+            templateBuilder.AppendLine("        /// <returns></returns>");
+            templateBuilder.AppendLine("        Task<$$TABLENAME$$Entity> InfoAsync($$TABLENAME$$ConditionModel model);");
+
+            templateBuilder.AppendLine("");
+            templateBuilder.AppendLine("");
+
+            templateBuilder.AppendLine("        /// <summary>");
+            templateBuilder.AppendLine("        /// 获取对象列表");
             templateBuilder.AppendLine("        /// </summary>");
             templateBuilder.AppendLine("        /// <param name=\"model\"></param>");
             templateBuilder.AppendLine("        /// <returns></returns>");

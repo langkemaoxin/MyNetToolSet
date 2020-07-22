@@ -6,17 +6,11 @@ namespace CodeGenerator
     {
         public  static void Execute()
         {
-            ConstInfo.EntityNamespace = "namespace JZFZ.CADProjectManager.Domain.Entity";
-            ConstInfo.ModelNamespace = "namespace JZFZ.CADProjectManager.Domain.Model";
+            ConstInfo.EntityNamespace = "namespace JZFZ.Projectmanager.Domain.Entity";
+            ConstInfo.ModelNamespace = "namespace JZFZ.Projectmanager.Domain.Request";
 
             var tableNames = new List<string>();
-            tableNames.Add("CMDRecord ");
-            tableNames.Add("CMDRecordZY ");
-            tableNames.Add("FileEditingTime ");
-            tableNames.Add("OpenRecord ");
-            tableNames.Add("PrjEvaluate ");
-            tableNames.Add("ErrorInfo ");
-            tableNames.Add("UseRecord ");
+            tableNames.Add("PreBindCompanyAuthorize"); 
 
             foreach (var tableName in tableNames)
             {

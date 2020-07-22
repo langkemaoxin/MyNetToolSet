@@ -18,17 +18,60 @@ namespace CodeGenerator
 
             templateBuilder.AppendLine("namespace $$PROJECTNAME$$.WebAPI2.Controllers");
             templateBuilder.AppendLine("{");
+
+            templateBuilder.AppendLine("    /// <summary>");
+            templateBuilder.AppendLine("    /// ");
+            templateBuilder.AppendLine("    /// </summary>");
             templateBuilder.AppendLine("    [ApiController]");
             templateBuilder.AppendLine("    [Route(\"[controller]\")]");
             templateBuilder.AppendLine("    public class $$TABLENAME$$Controller");
             templateBuilder.AppendLine("    {");
             templateBuilder.AppendLine("        private readonly I$$TABLENAME$$Service _$$PARAMETERNAME$$Service;");
 
+            templateBuilder.AppendLine("");
+            templateBuilder.AppendLine("");
+
+            templateBuilder.AppendLine("        /// <summary>");
+            templateBuilder.AppendLine("        /// ");
+            templateBuilder.AppendLine("        /// </summary>"); 
             templateBuilder.AppendLine("        public $$TABLENAME$$Controller(I$$TABLENAME$$Service $$PARAMETERNAME$$Service)");
             templateBuilder.AppendLine("        {");
             templateBuilder.AppendLine("            this._$$PARAMETERNAME$$Service = $$PARAMETERNAME$$Service;");
             templateBuilder.AppendLine("        }");
 
+            templateBuilder.AppendLine("");
+            templateBuilder.AppendLine("");
+
+            templateBuilder.AppendLine("        /// <summary>");
+            templateBuilder.AppendLine("        /// ");
+            templateBuilder.AppendLine("        /// </summary>");
+            templateBuilder.AppendLine("        /// <param name=\"model\"></param>");
+            templateBuilder.AppendLine("        /// <returns></returns>");
+            templateBuilder.AppendLine("        [HttpPost]");
+            templateBuilder.AppendLine("        [Route(\"Add\")]");
+            templateBuilder.AppendLine("        public async Task<ResultJsonInfo<$$TABLENAME$$Entity>> AddAsync($$TABLENAME$$AddModel model)");
+            templateBuilder.AppendLine("        {");
+            templateBuilder.AppendLine("            return await _$$PARAMETERNAME$$Service.AddAsync(model);");
+            templateBuilder.AppendLine("        }");
+
+
+            templateBuilder.AppendLine("");
+            templateBuilder.AppendLine("");
+
+            templateBuilder.AppendLine("        /// <summary>");
+            templateBuilder.AppendLine("        /// ");
+            templateBuilder.AppendLine("        /// </summary>");
+            templateBuilder.AppendLine("        /// <param name=\"model\"></param>");
+            templateBuilder.AppendLine("        /// <returns></returns>");
+            templateBuilder.AppendLine("        [HttpPost]");
+            templateBuilder.AppendLine("        [Route(\"Modify\")]");
+            templateBuilder.AppendLine("        public async Task<ResultJsonInfo<$$TABLENAME$$Entity>> ModifyAsync($$TABLENAME$$Model model)");
+            templateBuilder.AppendLine("        {");
+            templateBuilder.AppendLine("            return await _$$PARAMETERNAME$$Service.ModifyAsync(model);");
+            templateBuilder.AppendLine("        }");
+
+            templateBuilder.AppendLine("");
+            templateBuilder.AppendLine("");
 
             templateBuilder.AppendLine("        /// <summary>");
             templateBuilder.AppendLine("        /// ");
@@ -43,6 +86,9 @@ namespace CodeGenerator
             templateBuilder.AppendLine("        }");
 
 
+            templateBuilder.AppendLine("");
+            templateBuilder.AppendLine("");
+
             templateBuilder.AppendLine("        /// <summary>");
             templateBuilder.AppendLine("        /// ");
             templateBuilder.AppendLine("        /// </summary>");
@@ -54,31 +100,8 @@ namespace CodeGenerator
             templateBuilder.AppendLine("        {");
             templateBuilder.AppendLine("            return await _$$PARAMETERNAME$$Service.InfosAsync(model);");
             templateBuilder.AppendLine("        }");
+             
 
-
-            templateBuilder.AppendLine("        /// <summary>");
-            templateBuilder.AppendLine("        /// ");
-            templateBuilder.AppendLine("        /// </summary>");
-            templateBuilder.AppendLine("        /// <param name=\"model\"></param>");
-            templateBuilder.AppendLine("        /// <returns></returns>");
-            templateBuilder.AppendLine("        [HttpPost]");
-            templateBuilder.AppendLine("        [Route(\"Add\")]");
-            templateBuilder.AppendLine("        public async Task<ResultJsonInfo<$$TABLENAME$$Entity>> AddAsync($$TABLENAME$$Model model)");
-            templateBuilder.AppendLine("        {");
-            templateBuilder.AppendLine("            return await _$$PARAMETERNAME$$Service.AddAsync(model);");
-            templateBuilder.AppendLine("        }");
-
-            templateBuilder.AppendLine("        /// <summary>");
-            templateBuilder.AppendLine("        /// ");
-            templateBuilder.AppendLine("        /// </summary>");
-            templateBuilder.AppendLine("        /// <param name=\"model\"></param>");
-            templateBuilder.AppendLine("        /// <returns></returns>");
-            templateBuilder.AppendLine("        [HttpPost]");
-            templateBuilder.AppendLine("        [Route(\"Modify\")]");
-            templateBuilder.AppendLine("        public async Task<ResultJsonInfo<$$TABLENAME$$Entity>> ModifyAsync($$TABLENAME$$Model model)");
-            templateBuilder.AppendLine("        {");
-            templateBuilder.AppendLine("            return await _$$PARAMETERNAME$$Service.ModifyAsync(model);");
-            templateBuilder.AppendLine("        }");
             templateBuilder.AppendLine("    }");
             templateBuilder.AppendLine("}");
 

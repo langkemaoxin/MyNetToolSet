@@ -11,15 +11,10 @@ namespace CodeGenerator
         {
             var tables = new List<string>()
             {
-                "CMDRecord",
-                "CMDRecordZY",
-                "FileEditingTime",
-                "OpenRecord",
-                "PrjEvaluate",
-                "ErrorInfo",
+                "PreBindCompanyAuthorize",
             };
 
-            BusinessFactory.Init("JZFZ.CADProjectManager");
+            BusinessFactory.Init("JZFZ.Projectmanager");
 
             foreach (var item in tables)
             {

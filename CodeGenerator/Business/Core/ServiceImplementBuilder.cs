@@ -23,57 +23,75 @@ namespace CodeGenerator
             templateBuilder.AppendLine("    {");
             templateBuilder.AppendLine("        private readonly I$$TABLENAME$$Rep _$$PARAMETERNAME$$Rep;");
 
+
+            templateBuilder.AppendLine("");
+            templateBuilder.AppendLine("");
+
             templateBuilder.AppendLine("        public $$TABLENAME$$Service(I$$TABLENAME$$Rep $$PARAMETERNAME$$Rep)");
             templateBuilder.AppendLine("        {");
             templateBuilder.AppendLine("            _$$PARAMETERNAME$$Rep = $$PARAMETERNAME$$Rep;");
             templateBuilder.AppendLine("        }");
 
 
+            templateBuilder.AppendLine("");
+            templateBuilder.AppendLine("");
+
             templateBuilder.AppendLine("        /// <summary>");
-            templateBuilder.AppendLine("        /// ");
+            templateBuilder.AppendLine("        /// 添加单个对象");
             templateBuilder.AppendLine("        /// </summary>");
             templateBuilder.AppendLine("        /// <param name=\"model\"></param>");
             templateBuilder.AppendLine("        /// <returns></returns>");
-            templateBuilder.AppendLine("        public async Task<ResultJsonInfo<$$TABLENAME$$Entity>> AddAsync($$TABLENAME$$Model model)");
+            templateBuilder.AppendLine("        public async Task<ResultJsonInfo<$$TABLENAME$$ResponseModel>> AddAsync($$TABLENAME$$AddModel model)");
             templateBuilder.AppendLine("        {");
             templateBuilder.AppendLine("            var entityItem = await _$$PARAMETERNAME$$Rep.AddAsync(model);");
-            templateBuilder.AppendLine("            return ResultJsonInfo<$$TABLENAME$$Entity>.GetSucceedObject(entityItem);");
+            templateBuilder.AppendLine("            return ResultJsonInfo<$$TABLENAME$$ResponseModel>.GetSucceedObject(entityItem);");
             templateBuilder.AppendLine("        }");
 
 
+            templateBuilder.AppendLine("");
+            templateBuilder.AppendLine("");
+
             templateBuilder.AppendLine("        /// <summary>");
-            templateBuilder.AppendLine("        /// ");
+            templateBuilder.AppendLine("        /// 修改单个对象");
             templateBuilder.AppendLine("        /// </summary>");
             templateBuilder.AppendLine("        /// <param name=\"model\"></param>");
             templateBuilder.AppendLine("        /// <returns></returns>");
-            templateBuilder.AppendLine("        public async Task<ResultJsonInfo<$$TABLENAME$$Entity>> InfoAsync($$TABLENAME$$ConditionModel model)");
-            templateBuilder.AppendLine("        {");
-            templateBuilder.AppendLine("            var entityItem = await _$$PARAMETERNAME$$Rep.InfoAsync(model);");
-            templateBuilder.AppendLine("            return ResultJsonInfo<$$TABLENAME$$Entity>.GetSucceedObject(entityItem);");
-            templateBuilder.AppendLine("        }");
-
-
-            templateBuilder.AppendLine("        /// <summary>");
-            templateBuilder.AppendLine("        /// ");
-            templateBuilder.AppendLine("        /// </summary>");
-            templateBuilder.AppendLine("        /// <param name=\"model\"></param>");
-            templateBuilder.AppendLine("        /// <returns></returns>");
-            templateBuilder.AppendLine("        public async Task<ResultJsonInfo<$$TABLENAME$$Entity>> ModifyAsync($$TABLENAME$$Model model)");
+            templateBuilder.AppendLine("        public async Task<ResultJsonInfo<$$TABLENAME$$ResponseModel>> ModifyAsync($$TABLENAME$$Model model)");
             templateBuilder.AppendLine("        {");
             templateBuilder.AppendLine("            var entityItem = await _$$PARAMETERNAME$$Rep.ModifyAsync(model);");
-            templateBuilder.AppendLine("            return ResultJsonInfo<$$TABLENAME$$Entity>.GetSucceedObject(entityItem);");
+            templateBuilder.AppendLine("            return ResultJsonInfo<$$TABLENAME$$ResponseModel>.GetSucceedObject(entityItem);");
             templateBuilder.AppendLine("        }");
 
+
+            templateBuilder.AppendLine("");
+            templateBuilder.AppendLine("");
+
             templateBuilder.AppendLine("        /// <summary>");
-            templateBuilder.AppendLine("        /// ");
+            templateBuilder.AppendLine("        /// 获取单个对象");
             templateBuilder.AppendLine("        /// </summary>");
             templateBuilder.AppendLine("        /// <param name=\"model\"></param>");
             templateBuilder.AppendLine("        /// <returns></returns>");
-            templateBuilder.AppendLine("        public async Task<ResultJsonInfo<List<$$TABLENAME$$Entity>>> InfosAsync($$TABLENAME$$ConditionModel model)");
+            templateBuilder.AppendLine("        public async Task<ResultJsonInfo<$$TABLENAME$$ResponseModel>> InfoAsync($$TABLENAME$$ConditionModel model)");
+            templateBuilder.AppendLine("        {");
+            templateBuilder.AppendLine("            var entityItem = await _$$PARAMETERNAME$$Rep.InfoAsync(model);");
+            templateBuilder.AppendLine("            return ResultJsonInfo<$$TABLENAME$$ResponseModel>.GetSucceedObject(entityItem);");
+            templateBuilder.AppendLine("        }");
+
+
+            templateBuilder.AppendLine("");
+            templateBuilder.AppendLine("");
+
+            templateBuilder.AppendLine("        /// <summary>");
+            templateBuilder.AppendLine("        /// 获取对象列表");
+            templateBuilder.AppendLine("        /// </summary>");
+            templateBuilder.AppendLine("        /// <param name=\"model\"></param>");
+            templateBuilder.AppendLine("        /// <returns></returns>");
+            templateBuilder.AppendLine("        public async Task<ResultJsonInfo<List<$$TABLENAME$$ResponseModel>>> InfosAsync($$TABLENAME$$ConditionModel model)");
             templateBuilder.AppendLine("        {");
             templateBuilder.AppendLine("            var entityItem = await _$$PARAMETERNAME$$Rep.InfosAsync(model);");
-            templateBuilder.AppendLine("            return ResultJsonInfo<List<$$TABLENAME$$Entity>>.GetSucceedObject(entityItem);");
+            templateBuilder.AppendLine("            return ResultJsonInfo<List<$$TABLENAME$$ResponseModel>>.GetSucceedObject(entityItem);");
             templateBuilder.AppendLine("        }");
+
             templateBuilder.AppendLine("    }");
             templateBuilder.AppendLine("}");
 

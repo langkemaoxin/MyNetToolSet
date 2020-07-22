@@ -5,5 +5,7 @@
         Model,
         Entity,
         ConditionModel,
+        ResponseModel,
+        RequestModel,
     }
 }

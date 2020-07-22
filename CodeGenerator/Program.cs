@@ -6,7 +6,7 @@ namespace CodeGenerator
 {
     class Program
     {
-        public static string ConnectionString = "xxxxxx";
+        public static string ConnectionString = "xxxx";
 
         public static string FieldPath = string.Empty;
 
