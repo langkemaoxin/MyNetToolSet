@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Threading.Tasks;
+using MyToolSet;
 
 
 namespace CodeGenerator
 {
     class Program
     {
-        public static string ConnectionString = "xxxx";
+        public static string ConnectionString = FileHelperExtension.ReadSingleLineFromFile("C:\\jzcadstr.txt");
 
         public static string FieldPath = string.Empty;
 
@@ -17,7 +18,7 @@ namespace CodeGenerator
 
         static void Main(string[] args)
         {
-            //BusinessBuilderClient.Execute();
+            BusinessBuilderClient.Execute();
 
             ModelBuilderClient.Execute();
 
