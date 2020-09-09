@@ -10,7 +10,7 @@ namespace CodeGenerator
             ConstInfo.ModelNamespace = "namespace JZFZ.Projectmanager.Domain.Request";
 
             var tableNames = new List<string>();
-            tableNames.Add("PreBindCompanyAuthorize"); 
+            tableNames.Add("PreBindMenu"); 
 
             foreach (var tableName in tableNames)
             {

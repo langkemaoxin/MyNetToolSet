@@ -11,7 +11,7 @@ namespace CodeGenerator
         {
             var tables = new List<string>()
             {
-                "PreBindCompanyAuthorize",
+                "PreBindMenu",
             };
 
             BusinessFactory.Init("JZFZ.Projectmanager");
