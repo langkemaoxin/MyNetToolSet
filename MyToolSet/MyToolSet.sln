@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyToolSet", "MyToolSet.cspr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeGenerator", "..\CodeGenerator\CodeGenerator.csproj", "{E8112A95-47D1-4F6D-9586-FD9EF5AFD91A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeGenerator.Simple", "..\CodeGenerator.Simple\CodeGenerator.Simple.csproj", "{843A8F74-0393-4A55-9E84-48DE864F3BA2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{E8112A95-47D1-4F6D-9586-FD9EF5AFD91A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E8112A95-47D1-4F6D-9586-FD9EF5AFD91A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E8112A95-47D1-4F6D-9586-FD9EF5AFD91A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{843A8F74-0393-4A55-9E84-48DE864F3BA2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{843A8F74-0393-4A55-9E84-48DE864F3BA2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{843A8F74-0393-4A55-9E84-48DE864F3BA2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{843A8F74-0393-4A55-9E84-48DE864F3BA2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
