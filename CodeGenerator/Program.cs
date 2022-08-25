@@ -7,7 +7,7 @@ namespace CodeGenerator
 {
     class Program
     {
-        public static string ConnectionString = FileHelperExtension.ReadSingleLineFromFile("C:\\jzcadstr.txt");
+        public static string ConnectionString = FileHelperExtension.ReadSingleLineFromFile("C:\\connectStr.txt");
 
         public static string FieldPath = string.Empty;
 
