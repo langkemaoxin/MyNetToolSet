@@ -9,14 +9,19 @@ namespace CodeGenerator
     {
         public static void Execute()
         {
-            var tableNames = new List<string>();
-            tableNames.Add("DwgPlatformConfig");
-            tableNames.Add("DwgMenu");
-            tableNames.Add("DwgInfo");
-            tableNames.Add("DwgFileFetchScheduleRecord");
-            tableNames.Add("DwgFileAnalyticScheduleRecord");
+			var tableNames = new List<string>
+			{
+				 "T_CP_TaskNoticeMajor",
+				 "T_CP_TaskNoticeRole",
+				 "T_CP_TaskNotice",
+				 "S_W_RBS_ToXT",
+				 "ProjectUser",
+				 "V_I_ProjectInfo",
+				 "S_A_User",
+				 "S_A_Org"
+			};
 
-            BusinessFactory.Init("JZFZ.DwgInfoPlatform");
+			BusinessFactory.Init("JZFZ.DwgInfoPlatform");
 
             foreach (var item in tableNames)
             {

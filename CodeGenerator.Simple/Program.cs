@@ -12,7 +12,12 @@ namespace CodeGenerator
 		{
 			var list = new List<string>
 			{
-				 "T_CP_TaskNoticeMajor"
+				"Project",
+				"SystemConfig",
+				"SpecialtyMember",
+				"SpecialtyManager",
+				"Specialty",
+				"SpecialtyDeputyManager"
 			};
 
 			var postFixs = new List<string>

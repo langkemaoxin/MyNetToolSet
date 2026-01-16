@@ -7,7 +7,7 @@ namespace CodeGenerator
 {
     class Program
     {
-        public static string ConnectionString = FileHelperExtension.ReadSingleLineFromFile("C:\\connectStr.txt");
+        public static string ConnectionString = FileHelperExtension.ReadSingleLineFromFile("C:\\jzcadstr.txt");
 
         public static string FieldPath = string.Empty;
 
@@ -20,7 +20,7 @@ namespace CodeGenerator
         {
             BusinessBuilderClient.Execute();
 
-            ModelBuilderClient.Execute();
+           // ModelBuilderClient.Execute();
 
             string dir = AppDomain.CurrentDomain.BaseDirectory;
 

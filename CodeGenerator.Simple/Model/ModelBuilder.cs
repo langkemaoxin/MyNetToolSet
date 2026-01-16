@@ -5,6 +5,8 @@ using System.Text;
 
 namespace CodeGenerator
 {
+
+
 	public class ModelBuilder
 	{
 		public string TableName { get; set; }
@@ -67,35 +69,78 @@ namespace CodeGenerator
 				return string.Empty;
 			}
 		}
-
-		/// <summary>
-		/// 获取字段所对应的类型
-		/// </summary>
-		/// <param name="type"></param>
-		/// <param name="nullAble"></param>
-		/// <returns></returns>
 		private string BuildType(string type, string nullAble)
 		{
+			// 统一转换为小写便于比较
+			string typeLower = type.ToLower();
+			string nullAbleLower = nullAble.ToLower();
 
-			if (type.Contains("int") && nullAble.Equals("NO", StringComparison.OrdinalIgnoreCase))
-				return "int";
-			else if ((type.Contains("int")) && nullAble.Equals("YES", StringComparison.OrdinalIgnoreCase))
-				return "int?";
-			else if (type.Equals("bit") && nullAble.Equals("NO", StringComparison.OrdinalIgnoreCase))
-				return "bool";
-			else if (type.Equals("bit") && nullAble.Equals("YES", StringComparison.OrdinalIgnoreCase))
-				return "bool?";
-			else if ((type.Equals("decimal") || type.Equals("numeric") || type.Equals("float") || type.Equals("real")) && nullAble.Equals("NO", StringComparison.OrdinalIgnoreCase))
-				return "decimal";
-			else if ((type.Equals("decimal") || type.Equals("numeric") || type.Equals("float") || type.Equals("real")) && nullAble.Equals("Yes", StringComparison.OrdinalIgnoreCase))
-				return "decimal?";
-			else if (type.Equals("datetime") && nullAble.Equals("YES", StringComparison.OrdinalIgnoreCase))
-				return "DateTime?";
-			else if (type.Equals("datetime") && nullAble.Equals("NO", StringComparison.OrdinalIgnoreCase))
-				return "DateTime";
-			else if (type.Equals("nchar") || type.Equals("char") || type.Equals("nvarchar") || type.Equals("varchar") || type.Equals("text") || type.Equals("ntext"))
-				return "string";
-			else throw new Exception("无此类型");
+			if (typeLower.Contains("int"))
+			{
+				return nullAbleLower == "yes" ? "int?" : "int";
+			}
+			else if (typeLower == "bit")
+			{
+				return nullAbleLower == "yes" ? "bool?" : "bool";
+			}
+			else if (typeLower == "tinyint")
+			{
+				return nullAbleLower == "yes" ? "byte?" : "byte";
+			}
+			else if (typeLower == "smallint")
+			{
+				return nullAbleLower == "yes" ? "short?" : "short";
+			}
+			else if (typeLower == "bigint")
+			{
+				return nullAbleLower == "yes" ? "long?" : "long";
+			}
+			else if (typeLower == "date")  // 添加date类型
+			{
+				return nullAbleLower == "yes" ? "DateTime?" : "DateTime";
+			}
+			else if (typeLower == "datetime" || typeLower == "datetime2" || typeLower == "smalldatetime")
+			{
+				return nullAbleLower == "yes" ? "DateTime?" : "DateTime";
+			}
+			else if (typeLower == "datetimeoffset")
+			{
+				return nullAbleLower == "yes" ? "DateTimeOffset?" : "DateTimeOffset";
+			}
+			else if (typeLower == "time")
+			{
+				return nullAbleLower == "yes" ? "TimeSpan?" : "TimeSpan";
+			}
+			else if (typeLower == "decimal" || typeLower == "numeric")
+			{
+				return nullAbleLower == "yes" ? "decimal?" : "decimal";
+			}
+			else if (typeLower == "float" || typeLower == "real")
+			{
+				return nullAbleLower == "yes" ? "double?" : "double";  // SQL float对应C# double
+			}
+			else if (typeLower == "money" || typeLower == "smallmoney")
+			{
+				return nullAbleLower == "yes" ? "decimal?" : "decimal";
+			}
+			else if (typeLower.Contains("char") || typeLower.Contains("text") ||
+					 typeLower.Contains("nchar") || typeLower.Contains("nvarchar") ||
+					 typeLower.Contains("varchar") || typeLower == "xml")
+			{
+				return "string";  // 字符串类型在C#中本身就是可空的
+			}
+			else if (typeLower == "uniqueidentifier")
+			{
+				return nullAbleLower == "yes" ? "Guid?" : "Guid";
+			}
+			else if (typeLower == "binary" || typeLower == "varbinary" || typeLower == "image")
+			{
+				return "byte[]";
+			}
+			else
+			{
+				throw new ArgumentException($"不支持的数据类型: {type}");
+			}
 		}
 	}
 }
