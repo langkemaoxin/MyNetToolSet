@@ -34,8 +34,8 @@ namespace XT.Service.Rep
 			
 			var result = CodeGeneratorTools.Create()
 				.WithTemplateOrFilePath(template)
-				.WithTable(new { Name = "Users", Description = "用户表" })
-				.WithTable(new { Name = "Orders", Description = "订单表" })
+				.WithTable(new { Name = "Users", Description = "用户表" },"UsersRep.cs")
+				.WithTable(new { Name = "Orders", Description = "订单表" }, "Orders.cs")
 				.WithOutputPath("C:\\GeneratedRepositories")
 				.Build();
 

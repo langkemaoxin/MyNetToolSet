@@ -17,7 +17,7 @@ namespace CodeGenerator
     {
         private readonly object _lock = new object();
         private string _template;
-        private readonly List<object> _tables;
+        private readonly List<TableItem> _tables;
         private string _outputPath;
         private string _fileNamePattern;
         private Func<object, string> _fileNamer;
@@ -70,7 +70,7 @@ namespace CodeGenerator
         /// </summary>
         private CodeGeneratorTools()
         {
-            _tables = new List<object>();
+            _tables = new List<TableItem>();
         }
 
         /// <summary>
@@ -109,45 +109,46 @@ namespace CodeGenerator
         /// <param name="template">模板内容或文件路径</param>
         /// <returns>当前构建器实例</returns>
         public CodeGeneratorTools WithTemplate(string template) => WithTemplateOrFilePath(template);
+         
 
         /// <summary>
-        /// 添加单个数据表配置
+        /// 添加单个数据表配置并指定生成文件名（强制覆盖命名策略）。
         /// </summary>
         /// <param name="table">数据表信息</param>
+        /// <param name="fileName">生成文件名（可带扩展名，不可包含路径）</param>
         /// <returns>当前构建器实例</returns>
         /// <exception cref="ArgumentNullException">当表信息为null时抛出</exception>
-        public CodeGeneratorTools WithTable(TableInfo table)
+        /// <exception cref="ArgumentException">当文件名为空时抛出</exception>
+        public CodeGeneratorTools WithTable(TableInfo table, string fileName)
         {
-            if (table == null)
-            {
-                throw new ArgumentNullException(nameof(table));
-            }
+            if (table == null) throw new ArgumentNullException(nameof(table));
+            if (string.IsNullOrWhiteSpace(fileName)) throw new ArgumentException("文件名不能为空", nameof(fileName));
 
             lock (_lock)
             {
-                _tables.Add(table);
+                _tables.Add(new TableItem { Data = table, FileName = fileName });
             }
 
             return this;
         }
+         
 
         /// <summary>
-        /// 添加单个数据表配置（动态对象版本）。
-        /// 支持使用 <c>new { Name = "Users", Description = "用户表" }</c> 等匿名对象。
+        /// 添加单个数据表配置（动态对象）并指定生成文件名（强制覆盖命名策略）。
         /// </summary>
         /// <param name="table">任意具有公共属性的对象（匿名对象、字典、ExpandoObject 等）。</param>
+        /// <param name="fileName">生成文件名（可带扩展名，不可包含路径）</param>
         /// <returns>当前构建器实例</returns>
         /// <exception cref="ArgumentNullException">当表信息为null时抛出</exception>
-        public CodeGeneratorTools WithTable(object table)
+        /// <exception cref="ArgumentException">当文件名为空时抛出</exception>
+        public CodeGeneratorTools WithTable(object table, string fileName)
         {
-            if (table == null)
-            {
-                throw new ArgumentNullException(nameof(table));
-            }
+            if (table == null) throw new ArgumentNullException(nameof(table));
+            if (string.IsNullOrWhiteSpace(fileName)) throw new ArgumentException("文件名不能为空", nameof(fileName));
 
             lock (_lock)
             {
-                _tables.Add(table);
+                _tables.Add(new TableItem { Data = table, FileName = fileName });
             }
 
             return this;
@@ -168,7 +169,10 @@ namespace CodeGenerator
 
             lock (_lock)
             {
-                _tables.AddRange(tables);
+                foreach (var t in tables)
+                {
+                    _tables.Add(new TableItem { Data = t });
+                }
             }
 
             return this;
@@ -229,17 +233,7 @@ namespace CodeGenerator
 
                     // 解析模板
                     var parsedTemplate = Template.Parse(_template);
-                    Template fileNameTemplate = null;
-                    if (!string.IsNullOrWhiteSpace(_fileNamePattern))
-                    {
-                        fileNameTemplate = Template.Parse(_fileNamePattern);
-                        if (fileNameTemplate.HasErrors)
-                        {
-                            result.Success = false;
-                            result.ErrorMessage = "文件名模板解析失败: " + string.Join(", ", fileNameTemplate.Messages.Select(m => m.Message));
-                            return result;
-                        }
-                    }
+                    Template fileNameTemplate = null; 
 
                     if (parsedTemplate.HasErrors)
                     {
@@ -248,32 +242,23 @@ namespace CodeGenerator
                         return result;
                     }
 
-                    // 生成代码文件
-                    var index = 0;
-                    foreach (var table in _tables)
+                    // 生成代码文件 
+                    foreach (var item in _tables)
                     {
                         var context = new TemplateContext();
 
                         var script = new ScriptObject();
-                        ImportDynamic(table, script);
+
+                        ImportDynamic(item.Data, script);
+
                         context.PushGlobal(script);
 
                         var generatedCode = parsedTemplate.Render(context);
 
                         // 计算文件名：优先使用文件名模板，其次命名委托，最后回退策略
-                        string fileName;
-                        if (fileNameTemplate != null)
-                        {
-                            fileName = fileNameTemplate.Render(context);
-                        } 
-                        else
-                        {
-                            var baseName = GetNameValue(table);
-                            if (string.IsNullOrWhiteSpace(baseName)) baseName = $"Generated_{index}";
-                            fileName = $"{baseName}Rep.cs";
-                        }
+                        string fileName = item.FileName;
 
-                        fileName = string.IsNullOrWhiteSpace(Path.GetExtension(fileName)) ? fileName + ".cs" : fileName;
+						fileName = string.IsNullOrWhiteSpace(Path.GetExtension(fileName)) ? fileName + ".cs" : fileName;
                         fileName = Path.GetFileName(fileName);
                         var filePath = Path.Combine(_outputPath, fileName);
 
@@ -282,7 +267,6 @@ namespace CodeGenerator
                         result.GeneratedFiles.Add(filePath);
 
                         context.PopGlobal();
-                        index++;
                     }
 
                     result.FileCount = result.GeneratedFiles.Count;
@@ -343,6 +327,12 @@ namespace CodeGenerator
                 script.SetValue(name, val, true);
                 script.SetValue(name.ToLowerInvariant(), val, true);
             }
+        }
+
+        private class TableItem
+        {
+            public object Data { get; set; }
+            public string FileName { get; set; }
         }
 
         /// <summary>
