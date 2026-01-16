@@ -31,12 +31,14 @@ namespace XT.Service.Rep
         }
     }
 }";
-			
+
+			var outPutPath = "C:\\GeneratedRepositories";
+
 			var result = CodeGeneratorTools.Create()
 				.WithTemplateOrFilePath(template)
 				.WithTable(new { Name = "Users", Description = "用户表" },"UsersRep.cs")
 				.WithTable(new { Name = "Orders", Description = "订单表" }, "Orders.cs")
-				.WithOutputPath("C:\\GeneratedRepositories")
+				.WithOutputPath(outPutPath)
 				.Build();
 
 			if (result.Success)
@@ -51,6 +53,8 @@ namespace XT.Service.Rep
 			{
 				Console.WriteLine($"生成失败: {result.ErrorMessage}");
 			}
+
+			System.Diagnostics.Process.Start("explorer.exe", outPutPath);
 		}
 	}
 }

@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // 有关程序集的一般信息由以下
 // 控制。更改这些特性值可修改
 // 与程序集关联的信息。
-[assembly: AssemblyTitle("CodeGenerator.Simple")]
+[assembly: AssemblyTitle("AutoGenerator.ServiceGenerator")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("CodeGenerator.Simple")]
+[assembly: AssemblyProduct("AutoGenerator.ServiceGenerator")]
 [assembly: AssemblyCopyright("Copyright ©  2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // 如果此项目向 COM 公开，则下列 GUID 用于类型库的 ID
-[assembly: Guid("843a8f74-0393-4a55-9e84-48de864f3ba2")]
+[assembly: Guid("8d16059f-9ed5-482b-98d4-c348f23b33fd")]
 
 // 程序集的版本信息由下列四个值组成: 
 //

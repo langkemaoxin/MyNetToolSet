@@ -106,7 +106,7 @@ namespace MyToolSet
                 using (var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite,
                     4096, true))
                 {
-                    using (var stringReader = new StreamReader(fileStream, Encoding.GetEncoding("utf-8")))
+                    using (var stringReader = new StreamReader(fileStream, Encoding.GetEncoding("gb2312")))
                     {
                         var readLine = stringReader.ReadLine();
                         return readLine;
