@@ -12,22 +12,21 @@ namespace CodeGenerator
         {
             var list = new List<string>
             {
-                "DwgPlatformConfig",
-                "DwgMenu",
-                "DwgInfo",
-                "DwgFileFetchScheduleRecord",
-                "DwgFileAnalyticScheduleRecord"
+                "Element_Scheme",
+                "Element_Scheme_Article",
+                "Element_Scheme_Article_Category",
+                "Element_Scheme_Category",
+                "Element_Scheme_Category_Link"
             };
+
             var postFixs = new List<string>
             {
-                "Entity",
-                "RequestModel",
-                "ResponseModel"
+                "Entity"
             };
 
             new ModelBuilderFactory()
                 .SetConnectionString(FileHelperExtension.ReadSingleLineFromFile("C:\\jzcadstr.txt"))
-                .SetNameSpace("JZFZ.Platform.Dwginfo")
+                .SetNameSpace("JZFZ.Projectmanager.Element.Domain")
                 .SetTableNames(list)
                 .SetPostFixs(postFixs)
                 .Build();

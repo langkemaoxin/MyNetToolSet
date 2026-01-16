@@ -5,7 +5,7 @@
         public static string GetAllDataSql = "SELECT NAME FROM MASTER.DBO.SYSDATABASES ORDER BY NAME";
         public static string GetAllTableSql = "SELECT name FROM sys.tables where type ='U'";
 
-        public static string GetTableInfoSql = @"SELECT DISTINCT a.COLUMN_NAME columnName, 
+        public static string GetTableInfoSql = @"SELECT  a.COLUMN_NAME columnName, 
                                           a.DATA_TYPE typeName, a.IS_NULLABLE isnullAble
                                           From INFORMATION_SCHEMA.Columns a LEFT JOIN 
                                           INFORMATION_SCHEMA.KEY_COLUMN_USAGE b ON a.TABLE_NAME=b.TABLE_NAME ";

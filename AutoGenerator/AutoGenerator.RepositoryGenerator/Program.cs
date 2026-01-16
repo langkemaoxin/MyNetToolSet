@@ -45,11 +45,11 @@ namespace AutoGenerator.RepositoryGenerator
         {
             var list = new List<string>
             {
-                "DwgPlatformConfig",
-                "DwgMenu",
-                "DwgInfo",
-                "DwgFileFetchScheduleRecord",
-                "DwgFileAnalyticScheduleRecord"
+               "Element_Scheme",
+                "Element_Scheme_Article",
+                "Element_Scheme_Article_Category",
+                "Element_Scheme_Category",
+                "Element_Scheme_Category_Link"
             };
 
           new RepositoryClassFactory()

@@ -59,7 +59,7 @@ namespace CodeGenerator
 
             try
             {
-                var desc = descriptionModels.FirstOrDefault(o => o.ColumnName.Equals(item.ColumnName, StringComparison.InvariantCultureIgnoreCase)).ColumnDescript;
+                var desc = descriptionModels.FirstOrDefault(o => o.ColumnName.Equals(item.ColumnName, StringComparison.InvariantCultureIgnoreCase))?.ColumnDescript;
                 return desc;
             }
             catch

@@ -4,17 +4,18 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{843A8F74-0393-4A55-9E84-48DE864F3BA2}</ProjectGuid>
+    <ProjectGuid>{2A0B0910-019D-4248-A430-633BF8EF62B1}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CodeGenerator.Simple</RootNamespace>
-    <AssemblyName>CodeGenerator.Simple</AssemblyName>
+    <RootNamespace>CodeGenerator.Console</RootNamespace>
+    <AssemblyName>CodeGenerator.Console</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -24,15 +25,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject />
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -45,27 +44,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Model\DescriptionBuilder.cs" />
-    <Compile Include="Model\Consitence.cs" />
-    <Compile Include="Model\ConstInfo.cs" />
-    <Compile Include="Model\DescriptionModel.cs" />
-    <Compile Include="Model\FieldProperty.cs" />
-    <Compile Include="Model\FieldPropertyBuilder.cs" />
-    <Compile Include="Model\FileType.cs" />
-    <Compile Include="Model\ModelBuilder.cs" />
-    <Compile Include="Model\ModelBuilderFactory.cs" />
-    <Compile Include="Model\SqlDataReaderExtension.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MyToolSet\MyToolSet.csproj">
-      <Project>{2bde15ee-200c-41f9-a518-33fecd4502ad}</Project>
-      <Name>MyToolSet</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
+    <None Include="App.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
