@@ -10,7 +10,9 @@ namespace CodeGenerator
 		private List<string> postFixs;
 
 		private string connectionString;
-		private string outputPath;
+	private string outputPath;
+	private IOutputWriter outputWriter;
+		private ILogger logger = new ConsoleLogger();
 
 		public ModelBuilderFactory SetConnectionString(string connectionString)
 		{
@@ -42,29 +44,41 @@ namespace CodeGenerator
 			return this;
 		}
 
+		public ModelBuilderFactory SetOutputWriter(IOutputWriter writer)
+		{
+			this.outputWriter = writer;
+			return this;
+		}
+
 		public void Build()
 		{
 			if (string.IsNullOrWhiteSpace(outputPath))
 			{
 				throw new System.InvalidOperationException("OutputPath is required");
 			}
+			if (outputWriter == null)
+			{
+				outputWriter = new Consitence(outputPath);
+			}
+
 			foreach (var tableName in tableNames)
 			{
+				logger.Info($"Generating models for table: {tableName}");
+
 				FieldPropertyBuilder fieldPropertyBuilder = new FieldPropertyBuilder(tableName, connectionString);
 
 				DescriptionBuilder commentBuilder = new DescriptionBuilder(tableName, connectionString);
 
-				List<FieldProperty> fieldPropertys = fieldPropertyBuilder.Build();
+				List<FieldProperty> fieldPropertys = SimpleCache.GetOrAdd($"field:{connectionString}:{tableName}", () => fieldPropertyBuilder.Build());
 
-				List<DescriptionModel> descriptionModels = commentBuilder.Build();
+				List<DescriptionModel> descriptionModels = SimpleCache.GetOrAdd($"desc:{connectionString}:{tableName}", () => commentBuilder.Build());
 
 				ModelBuilder modelBuilder = new ModelBuilder(tableName, namespaceStr, fieldPropertys, descriptionModels);
 
 				foreach (var postFix in postFixs)
 				{
 					string modelStr = modelBuilder.BuildModelWithPostFix(postFix);
-					Consitence consitence = new Consitence(postFix, modelBuilder.TableName, outputPath);
-					consitence.FlushToDisk(modelStr);
+					outputWriter.Write(postFix, modelBuilder.TableName, modelStr);
 				}
 			}
 		}

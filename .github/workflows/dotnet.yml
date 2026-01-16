@@ -1,0 +1,21 @@
+name: .NET CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Restore
+        run: dotnet restore "e:\MyGithub\MyNetToolSet\TableGenerator\TableGenerator.csproj"
+      - name: Build
+        run: dotnet build "e:\MyGithub\MyNetToolSet\TableGenerator\TableGenerator.csproj" --configuration Release --no-restore

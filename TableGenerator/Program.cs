@@ -28,12 +28,15 @@ namespace CodeGenerator
 
 			var outputPath = "C:\\GeneratedRepositories";
 
+			var writer = new Consitence(outputPath);
+
 			new ModelBuilderFactory()
 				.SetConnectionString(FileHelperExtension.ReadSingleLineFromFile("C:\\jzcadstr.txt"))
 				.SetNameSpace("JZFZ.Platform.Dwginfo")
 				.SetTableNames(list)
 				.SetPostFixs(postFixs)
 				.SetOutputPath(outputPath)
+				.SetOutputWriter(writer)
 				.Build();
 
 			System.Diagnostics.Process.Start("explorer.exe", outputPath);

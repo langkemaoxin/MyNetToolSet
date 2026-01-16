@@ -3,22 +3,18 @@ using System.IO;
 
 namespace CodeGenerator
 {
-	public class Consitence
+    public class Consitence : IOutputWriter
 	{
-		private readonly string fileType;
-		private readonly string tableName;
-		private readonly string outputRoot;
+        private readonly string outputRoot;
 
-		public Consitence(string fileType, string tableName, string outputRoot)
+        public Consitence(string outputRoot)
 		{
-			this.fileType = fileType;
-			this.tableName = tableName;
 			this.outputRoot = outputRoot;
 		}
 
-		public void FlushToDisk(string modelContent)
+        public void Write(string fileType, string tableName, string content)
 		{
-			string directory = string.IsNullOrWhiteSpace(outputRoot) ? AppDomain.CurrentDomain.BaseDirectory + "\\Model\\" : outputRoot;
+            string directory = string.IsNullOrWhiteSpace(outputRoot) ? AppDomain.CurrentDomain.BaseDirectory + "\\Model\\" : outputRoot;
 
 			//是否存在文件夹,不存在则创建
 			if (!Directory.Exists(directory))
@@ -33,7 +29,7 @@ namespace CodeGenerator
 				Directory.CreateDirectory(realPath);
 			}
 
-			var path = $"{realPath}\\{tableName}{fileType}.cs";
+            var path = $"{realPath}\\{tableName}{fileType}.cs";
 
 			try
 			{
@@ -41,11 +37,10 @@ namespace CodeGenerator
 			}
 			catch { }
 
-			StreamWriter sr = File.CreateText(path);
-			sr.Write(modelContent.ToString());
+            StreamWriter sr = File.CreateText(path);
+            sr.Write(content);
 			sr.Flush();
 			sr.Close();
 		}
-
 	}
 }
