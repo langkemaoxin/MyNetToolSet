@@ -33,9 +33,9 @@ namespace XT.Service.Rep
 }";
 			
 			var result = CodeGeneratorTools.Create()
-				.WithTemplate(template)
-				.WithTable(new CodeGeneratorTools.TableInfo { Name = "Users", Description = "用户表" })
-				.WithTable(new CodeGeneratorTools.TableInfo { Name = "Orders", Description = "订单表" })
+				.WithTemplateOrFilePath(template)
+				.WithTable(new { Name = "Users", Description = "用户表" })
+				.WithTable(new { Name = "Orders", Description = "订单表" })
 				.WithOutputPath("C:\\GeneratedRepositories")
 				.Build();
 

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Reflection;
 
 namespace CodeGenerator
 {
@@ -18,6 +19,8 @@ namespace CodeGenerator
         private string _template;
         private readonly List<object> _tables;
         private string _outputPath;
+        private string _fileNamePattern;
+        private Func<object, string> _fileNamer;
         private bool _disposed;
 
         /// <summary>
@@ -85,7 +88,7 @@ namespace CodeGenerator
         /// <param name="template">模板内容</param>
         /// <returns>当前构建器实例</returns>
         /// <exception cref="ArgumentException">当模板为空或null时抛出</exception>
-        public CodeGeneratorTools WithTemplate(string template)
+        public CodeGeneratorTools WithTemplateOrFilePath(string template)
         {
             if (string.IsNullOrWhiteSpace(template))
             {
@@ -99,6 +102,13 @@ namespace CodeGenerator
 
             return this;
         }
+
+        /// <summary>
+        /// 设置模板（别名）：支持传入模板字符串或模板文件路径。
+        /// </summary>
+        /// <param name="template">模板内容或文件路径</param>
+        /// <returns>当前构建器实例</returns>
+        public CodeGeneratorTools WithTemplate(string template) => WithTemplateOrFilePath(template);
 
         /// <summary>
         /// 添加单个数据表配置
@@ -138,27 +148,6 @@ namespace CodeGenerator
             lock (_lock)
             {
                 _tables.Add(table);
-            }
-
-            return this;
-        }
-
-        /// <summary>
-        /// 批量添加多个数据表配置
-        /// </summary>
-        /// <param name="tables">数据表信息集合</param>
-        /// <returns>当前构建器实例</returns>
-        /// <exception cref="ArgumentNullException">当表集合为null时抛出</exception>
-        public CodeGeneratorTools WithTables(IEnumerable<TableInfo> tables)
-        {
-            if (tables == null)
-            {
-                throw new ArgumentNullException(nameof(tables));
-            }
-
-            lock (_lock)
-            {
-                _tables.AddRange(tables);
             }
 
             return this;
@@ -205,7 +194,7 @@ namespace CodeGenerator
 
             return this;
         }
-
+ 
         /// <summary>
         /// 执行代码生成
         /// </summary>
@@ -240,6 +229,17 @@ namespace CodeGenerator
 
                     // 解析模板
                     var parsedTemplate = Template.Parse(_template);
+                    Template fileNameTemplate = null;
+                    if (!string.IsNullOrWhiteSpace(_fileNamePattern))
+                    {
+                        fileNameTemplate = Template.Parse(_fileNamePattern);
+                        if (fileNameTemplate.HasErrors)
+                        {
+                            result.Success = false;
+                            result.ErrorMessage = "文件名模板解析失败: " + string.Join(", ", fileNameTemplate.Messages.Select(m => m.Message));
+                            return result;
+                        }
+                    }
 
                     if (parsedTemplate.HasErrors)
                     {
@@ -249,22 +249,32 @@ namespace CodeGenerator
                     }
 
                     // 生成代码文件
+                    var index = 0;
                     foreach (var table in _tables)
                     {
-                        var context = new TemplateContext
-                        {
-                            MemberRenamer = member => member.Name.ToLowerInvariant()
-                        };
+                        var context = new TemplateContext();
 
                         var script = new ScriptObject();
-                        script.Import(table, renamer: member => member.Name.ToLowerInvariant());
+                        ImportDynamic(table, script);
                         context.PushGlobal(script);
 
                         var generatedCode = parsedTemplate.Render(context);
 
-                        // 计算文件名：优先取 name/Name 属性
-                        string nameValue = GetNameValue(table);
-                        var fileName = $"{nameValue}Rep.cs";
+                        // 计算文件名：优先使用文件名模板，其次命名委托，最后回退策略
+                        string fileName;
+                        if (fileNameTemplate != null)
+                        {
+                            fileName = fileNameTemplate.Render(context);
+                        } 
+                        else
+                        {
+                            var baseName = GetNameValue(table);
+                            if (string.IsNullOrWhiteSpace(baseName)) baseName = $"Generated_{index}";
+                            fileName = $"{baseName}Rep.cs";
+                        }
+
+                        fileName = string.IsNullOrWhiteSpace(Path.GetExtension(fileName)) ? fileName + ".cs" : fileName;
+                        fileName = Path.GetFileName(fileName);
                         var filePath = Path.Combine(_outputPath, fileName);
 
                         File.WriteAllText(filePath, generatedCode, Encoding.UTF8);
@@ -272,6 +282,7 @@ namespace CodeGenerator
                         result.GeneratedFiles.Add(filePath);
 
                         context.PopGlobal();
+                        index++;
                     }
 
                     result.FileCount = result.GeneratedFiles.Count;
@@ -284,6 +295,53 @@ namespace CodeGenerator
                 }
 
                 return result;
+            }
+        }
+
+        /// <summary>
+        /// 获取表对象中的名称属性值，支持 name/Name 以及字典、ExpandoObject。
+        /// </summary>
+        /// <param name="table">表对象</param>
+        /// <returns>名称字符串，不可为空则回退为"Unknown"</returns>
+        private static string GetNameValue(object table)
+        {
+            if (table == null) return "Unknown";
+
+            var type = table.GetType();
+            var prop = type.GetProperty("name") ?? type.GetProperty("Name");
+            var value = prop?.GetValue(table)?.ToString();
+
+            if (string.IsNullOrWhiteSpace(value) && table is System.Collections.Generic.IDictionary<string, object> dict)
+            {
+                if (dict.TryGetValue("name", out var v) || dict.TryGetValue("Name", out v))
+                {
+                    value = v?.ToString();
+                }
+            }
+
+            return string.IsNullOrWhiteSpace(value) ? "Unknown" : value;
+        }
+
+        private static void ImportDynamic(object source, ScriptObject script)
+        {
+            if (source is System.Collections.Generic.IDictionary<string, object> dict)
+            {
+                foreach (var kv in dict)
+                {
+                    var key = kv.Key ?? string.Empty;
+                    script.SetValue(key, kv.Value, true);
+                    script.SetValue(key.ToLowerInvariant(), kv.Value, true);
+                }
+                return;
+            }
+
+            var props = source.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
+            foreach (var p in props)
+            {
+                var name = p.Name;
+                var val = p.GetValue(source);
+                script.SetValue(name, val, true);
+                script.SetValue(name.ToLowerInvariant(), val, true);
             }
         }
 
