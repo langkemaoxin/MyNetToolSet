@@ -10,6 +10,7 @@ namespace CodeGenerator
 	{
 		static void Main(string[] args)
 		{
+
 			var list = new List<string>
 			{
 				"Project",
@@ -25,16 +26,17 @@ namespace CodeGenerator
 				"_Entity",
 			};
 
+			var outputPath = "C:\\GeneratedRepositories";
+
 			new ModelBuilderFactory()
 				.SetConnectionString(FileHelperExtension.ReadSingleLineFromFile("C:\\jzcadstr.txt"))
 				.SetNameSpace("JZFZ.Platform.Dwginfo")
 				.SetTableNames(list)
 				.SetPostFixs(postFixs)
+				.SetOutputPath(outputPath)
 				.Build();
 
-			string dir = AppDomain.CurrentDomain.BaseDirectory;
-
-			System.Diagnostics.Process.Start("explorer.exe", dir);
+			System.Diagnostics.Process.Start("explorer.exe", outputPath);
 		}
 	}
 

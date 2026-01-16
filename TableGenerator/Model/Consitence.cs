@@ -7,16 +7,18 @@ namespace CodeGenerator
 	{
 		private readonly string fileType;
 		private readonly string tableName;
+		private readonly string outputRoot;
 
-		public Consitence(string fileType, string tableName)
+		public Consitence(string fileType, string tableName, string outputRoot)
 		{
 			this.fileType = fileType;
 			this.tableName = tableName;
+			this.outputRoot = outputRoot;
 		}
 
 		public void FlushToDisk(string modelContent)
 		{
-			string directory = AppDomain.CurrentDomain.BaseDirectory + "\\Model\\";
+			string directory = string.IsNullOrWhiteSpace(outputRoot) ? AppDomain.CurrentDomain.BaseDirectory + "\\Model\\" : outputRoot;
 
 			//是否存在文件夹,不存在则创建
 			if (!Directory.Exists(directory))

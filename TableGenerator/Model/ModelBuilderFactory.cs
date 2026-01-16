@@ -10,6 +10,7 @@ namespace CodeGenerator
 		private List<string> postFixs;
 
 		private string connectionString;
+		private string outputPath;
 
 		public ModelBuilderFactory SetConnectionString(string connectionString)
 		{
@@ -35,8 +36,18 @@ namespace CodeGenerator
 			return this;
 		}
 
+		public ModelBuilderFactory SetOutputPath(string outputPath)
+		{
+			this.outputPath = outputPath;
+			return this;
+		}
+
 		public void Build()
 		{
+			if (string.IsNullOrWhiteSpace(outputPath))
+			{
+				throw new System.InvalidOperationException("OutputPath is required");
+			}
 			foreach (var tableName in tableNames)
 			{
 				FieldPropertyBuilder fieldPropertyBuilder = new FieldPropertyBuilder(tableName, connectionString);
@@ -52,7 +63,7 @@ namespace CodeGenerator
 				foreach (var postFix in postFixs)
 				{
 					string modelStr = modelBuilder.BuildModelWithPostFix(postFix);
-					Consitence consitence = new Consitence(postFix, modelBuilder.TableName);
+					Consitence consitence = new Consitence(postFix, modelBuilder.TableName, outputPath);
 					consitence.FlushToDisk(modelStr);
 				}
 			}
